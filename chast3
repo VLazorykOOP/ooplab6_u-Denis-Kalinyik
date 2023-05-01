@@ -1,0 +1,104 @@
+#include <iostream>
+#include <string>
+
+class File {
+protected:
+    std::string m_name;
+    int m_size;
+
+public:
+    File(const std::string& name = "", int size = 0)
+        : m_name(name), m_size(size)
+    {
+    }
+
+    virtual ~File() {}
+
+    virtual void printInfo() const
+    {
+        std::cout << "File name: " << m_name << ", size: " << m_size << " bytes" << std::endl;
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const File& file);
+    friend std::istream& operator>>(std::istream& is, File& file);
+};
+
+std::ostream& operator<<(std::ostream& os, const File& file)
+{
+    os << file.m_name << " " << file.m_size;
+    return os;
+}
+
+std::istream& operator>>(std::istream& is, File& file)
+{
+    is >> file.m_name >> file.m_size;
+    return is;
+}
+
+class ReadFile : virtual public File {
+public:
+    ReadFile(const std::string& name = "", int size = 0)
+        : File(name, size)
+    {
+    }
+
+    virtual ~ReadFile() {}
+
+    virtual void printInfo() const
+    {
+        std::cout << "Read file name: " << m_name << ", size: " << m_size << " bytes" << std::endl;
+    }
+};
+
+class WriteFile : virtual public File {
+public:
+    WriteFile(const std::string& name = "", int size = 0)
+        : File(name, size)
+    {
+    }
+
+    virtual ~WriteFile() {}
+
+    virtual void printInfo() const
+    {
+        std::cout << "Write file name: " << m_name << ", size: " << m_size << " bytes" << std::endl;
+    }
+};
+
+class ReadWriteFile : public ReadFile, public WriteFile {
+public:
+    ReadWriteFile(const std::string& name = "", int size = 0)
+        : File(name, size), ReadFile(name, size), WriteFile(name, size)
+    {
+    }
+
+    virtual ~ReadWriteFile() {}
+
+    virtual void printInfo() const
+    {
+        std::cout << "Read/Write file name: " << m_name << ", size: " << m_size << " bytes" << std::endl;
+    }
+};
+
+int main()
+{
+    File file("document.txt", 1024);
+    ReadFile rFile("readme.txt", 512);
+    WriteFile wFile("output.txt", 2048);
+    ReadWriteFile rwFile("data.bin", 4096);
+
+    std::cout << "File: " << file << std::endl;
+    std::cout << "Read file: " << rFile << std::endl;
+    std::cout << "Write file: " << wFile << std::endl;
+    std::cout << "Read/Write file: " << rwFile << std::endl;
+
+    std::cout << std::endl;
+
+    file.printInfo();
+    rFile.printInfo();
+    wFile.printInfo();
+    rwFile.printInfo();
+
+    return 0;
+}
+
