@@ -1,0 +1,57 @@
+#include <iostream>
+using namespace std;
+
+// класс А
+class A {
+public:
+    int a;
+    char b;
+};
+
+// класс B с не віртуальним наследованием от A
+class B : public A {
+public:
+    float c;
+};
+
+// класс F
+class F {
+public:
+    double d;
+};
+
+// класс H с не віртуальним наследованием от F
+class H : public F {
+public:
+    bool e;
+};
+
+// класс C с віртуальним наследованием от A и F
+class C : virtual public A, virtual public F {
+public:
+    long long f;
+};
+
+// класс D с не віртуальним наследованием от A, B, C
+class D : public A, public B, public C {
+public:
+    short g;
+};
+
+int main() {
+    A a;
+    B b;
+    C c;
+    D d;
+    F f;
+    H h;
+
+    cout << "Size of object a: " << sizeof(a) << endl;
+    cout << "Size of object b: " << sizeof(b) << endl;
+    cout << "Size of object c: " << sizeof(c) << endl;
+    cout << "Size of object d: " << sizeof(d) << endl;
+    cout << "Size of object f: " << sizeof(f) << endl;
+    cout << "Size of object h: " << sizeof(h) << endl;
+
+    return 0;
+}
