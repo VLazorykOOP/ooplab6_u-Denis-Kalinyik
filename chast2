@@ -1,0 +1,42 @@
+
+#include <iostream>
+#include <cmath>
+class Progression {
+public:
+    virtual double sum(int n) = 0;
+};
+
+class ArithmeticProgression : public Progression {
+public:
+    ArithmeticProgression(double a0, double d) : m_a0(a0), m_d(d) {}
+    double sum(int n) override {
+        return (n + 1) * (2 * m_a0 + (n - 1) * m_d) / 2;
+    }
+private:
+    double m_a0;
+    double m_d;
+};
+
+class GeometricProgression : public Progression {
+public:
+    GeometricProgression(double a0, double r) : m_a0(a0), m_r(r) {}
+    double sum(int n) override {
+        return (m_a0 - pow(m_r, n) * m_a0) / (1 - m_r);
+    }
+private:
+    double m_a0;
+    double m_r;
+};
+
+int main() {
+    Progression* ap = new ArithmeticProgression(1.0, 2.0);
+    Progression* gp = new GeometricProgression(1.0, 0.5);
+
+    std::cout << "Arithmetic Progression sum(10): " << ap->sum(10) << std::endl;
+    std::cout << "Geometric Progression sum(10): " << gp->sum(10) << std::endl;
+
+    delete ap;
+    delete gp;
+
+    return 0;
+}
